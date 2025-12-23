@@ -1,4 +1,4 @@
-name: Publish Package
+name: Publish @particulatesolutions/cms-editor
 
 on:
   release:
@@ -13,7 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npm ci
@@ -22,6 +21,4 @@ jobs:
         run: npm run build
 
       - name: Publish to npm
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance

@@ -1,6 +1,6 @@
 {
-  "name": "@socialfunders/cms-editor",
-  "version": "0.1.0",
+  "name": "@particulatesolutions/cms-editor",
+  "version": "0.1.1",
   "description": "CMS editor components for Socialfunders platform (internal use)",
   "type": "module",
   "main": "./dist/index.js",
@@ -85,7 +85,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shin--/sf-cms-editor.git"
+    "url": "git+https://github.com/ParticulateSolutions/sf-cms-editor.git"
   },
   "keywords": [
     "cms",
