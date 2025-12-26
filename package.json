@@ -1,6 +1,6 @@
 {
   "name": "@particulatesolutions/cms-editor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CMS editor components for Socialfunders platform (internal use)",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,6 +10,7 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./style.css": "./dist/index.css",
     "./components/*": "./dist/components/*",
     "./stores": "./dist/stores/cms.js",
     "./types": "./dist/types/cms.d.ts"
