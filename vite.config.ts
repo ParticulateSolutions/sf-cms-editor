@@ -37,12 +37,9 @@ export default defineConfig({
       // Externalize peer dependencies
       external: [
         'vue',
-        'pinia',
-        'primevue',
-        'primevue/button',
-        'primevue/panel',
-        '@primevue/forms',
-        '@primevue/forms/resolvers/zod',
+        /^primevue\/.*/,
+        /^@primevue\/.*/,
+        /^@primeuix\/.*/,
         'vue3-gettext',
         '@vueuse/integrations',
         'zod',
@@ -51,7 +48,6 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue',
-          pinia: 'Pinia'
         }
       }
     }

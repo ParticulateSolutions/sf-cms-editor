@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, useTemplateRef } from 'vue'
+import { ref, watch, useTemplateRef, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import z from 'zod'
-import type { ContentBlock, ContentBlockPosition, ContentBlockTheme, ISelectOption } from '@/types/cms'
+import type { ContentBlockPosition, ContentBlockTheme, ISelectOption, ContentBlockFormValues, ContentBlockButton, ContentBlockSettings, GenericContentBlock } from '@/types/cms'
 import type { FormInstance, FormSubmitEvent } from '@primevue/forms'
 import CMSButtonTable from './CMSButtonTable.vue'
 
@@ -11,7 +11,11 @@ const { $gettext } = useGettext()
 
 const visible = defineModel<boolean>('visible')
 const props = defineProps<{
-  contentBlock: ContentBlock | null
+  contentBlock: GenericContentBlock | null
+}>()
+
+const emit = defineEmits<{
+  'save:block': [blockId: string, formData: ContentBlockFormValues]
 }>()
 
 const formRef = useTemplateRef<FormInstance>('formRef')
@@ -28,11 +32,11 @@ const formSchema = z.object({
 })
 const resolver = zodResolver(formSchema)
 
-const buttons = ref([{
+const buttons = ref<ContentBlockButton[]>([{
   icon: '',
   text: '',
   url: '',
-  type: '',
+  type: 'primary',
   ariaLabel: '',
 }])
 
@@ -48,7 +52,7 @@ const themeOptions: ISelectOption<ContentBlockTheme>[] = [
   { label: $gettext('Dunkler Hintergrund mit heller Schrift'), value: 'dark' },
 ]
 
-const initialValues = ref({
+const initialValues = computed<ContentBlockSettings>(() => ({
   overtitle: props.contentBlock?.settings.overtitle || '',
   title: props.contentBlock?.settings.title || '',
   text: props.contentBlock?.settings.text || '',
@@ -57,14 +61,20 @@ const initialValues = ref({
   theme: props.contentBlock?.settings.theme || 'light',
   cssClasses: props.contentBlock?.settings.cssClasses || '',
   showInPageNavigation: props.contentBlock?.settings.showInPageNavigation || false,
-})
+}))
 
 watch(() => props.contentBlock, () => {
   formRef.value?.reset()
 }, { immediate: true })
 
 function onSubmit (event: FormSubmitEvent) {
-  console.log('Form submitted with values:', event.values)
+  if (!props.contentBlock) return
+  
+  const formData = event.values as ContentBlockFormValues
+  emit('save:block', props.contentBlock.id, {
+    ...formData,
+    buttons: buttons.value,
+  })
   visible.value = false
 }
 </script>

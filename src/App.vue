@@ -3,19 +3,89 @@ import { ref } from 'vue'
 import CMSContentArea from './components/CMSContentArea.vue'
 import CMSComponentPalette from './components/CMSComponentPalette.vue'
 import CMSMetadataPanel from './components/CMSMetadataPanel.vue'
-import { useCMSStore } from './stores/cms'
+import type { ContentBlock, ComponentType, ContentBlockFormValues, ProjectSettings } from './types/cms'
 
-const cmsStore = useCMSStore()
+const activeTab = ref<'editor' | 'metadata'>('editor')
 
-// Mock fetchCMSComponents for demo
-cmsStore.cmsComponents = [
+// Mock components for demo
+const components: ComponentType[] = [
   { id: '1', name: 'Text Block', type: 'text', icon: 'fa-solid fa-align-left' },
   { id: '2', name: 'Image Block', type: 'image', icon: 'fa-solid fa-image' },
   { id: '3', name: 'Text + Image', type: 'text-image', icon: 'fa-solid fa-columns' },
   { id: '4', name: 'Projects', type: 'projects', icon: 'fa-solid fa-list' }
 ]
 
-const activeTab = ref<'editor' | 'metadata'>('editor')
+// Mock blocks for demo
+const blocks = ref<ContentBlock[]>([
+  {
+    id: 'header-block',
+    name: 'Header Text',
+    componentType: 'text',
+    order: 0,
+    fixed: true,
+    settings: { title: 'Header', buttons: [], theme: 'light', visible: true },
+  },
+  {
+    id: 'footer-block',
+    name: 'Footer Text',
+    componentType: 'text',
+    order:1,
+    fixed: true,
+    settings: { title: 'Footer', buttons: [], theme: 'light', visible: true },
+  },
+])
+
+function handleAddBlock(block: ContentBlock, index: number) {
+  blocks.value.splice(index, 0, block)
+  // In a real app, you would call: await api.addBlock(block, index)
+}
+
+function handleRemoveBlock(blockId: string) {
+  const blockIndex = blocks.value.findIndex(b => b.id === blockId)
+  if (blockIndex !== -1) {
+    blocks.value.splice(blockIndex, 1)
+  }
+  // In a real app, you would call: await api.removeBlock(blockId)
+}
+
+function handleToggleVisibility(blockId: string, visibilityBefore: boolean, visibilityAfter: boolean) {
+  console.log(`Block ${blockId} visibility toggled: ${visibilityBefore} → ${visibilityAfter}`)
+  // In a real app, you would call: await api.updateBlockVisibility(blockId, visibilityAfter)
+}
+
+function handleSaveBlock(blockId: string, formData: ContentBlockFormValues) {
+  const block = blocks.value.find(b => b.id === blockId)
+  if (block && block.componentType !== 'projects') {
+    // Update settings for generic content blocks
+    const currentVisible = 'visible' in block.settings ? block.settings.visible : true
+    block.settings = {
+      overtitle: formData.overtitle,
+      title: formData.title,
+      text: formData.text,
+      imageUrl: formData.imageUrl,
+      positioning: formData.positioning,
+      theme: formData.theme,
+      cssClasses: formData.cssClasses,
+      showInPageNavigation: formData.showInPageNavigation,
+      buttons: formData.buttons,
+      visible: currentVisible,
+    }
+  }
+  // In a real app, you would call: await api.updateBlock(blockId, formData)
+}
+
+function handleSaveProjectSettings(blockId: string, settings: ProjectSettings) {
+  const block = blocks.value.find(b => b.id === blockId)
+  if (block && block.componentType === 'projects') {
+    // Update settings for project content blocks
+    block.settings = settings
+  }
+  // In a real app, you would call: await api.updateProjectSettings(blockId, settings)
+}
+
+function handleReorder(fromIndex: number, toIndex: number) {
+  console.log(`Reordered block from ${fromIndex} to ${toIndex}`)
+}
 </script>
 
 <template>
@@ -44,14 +114,23 @@ const activeTab = ref<'editor' | 'metadata'>('editor')
         <aside class="col-lg-3 col-md-4">
           <div class="bg-white rounded p-3 shadow d-flex flex-column h-100">
             <h2 class="mb-3 fs-5">Components</h2>
-            <CMSComponentPalette />
+            <CMSComponentPalette :components="components" />
           </div>
         </aside>
 
         <section class="col-lg-9 col-md-8">
           <div class="bg-white rounded p-3 shadow d-flex flex-column h-100">
             <h2 class="mb-3 fs-5">Page Content</h2>
-            <CMSContentArea />
+            <CMSContentArea
+              :blocks="blocks"
+              :components="components"
+              @add:block="handleAddBlock"
+              @remove:block="handleRemoveBlock"
+              @after:toggle-visibility="handleToggleVisibility"
+              @save:block="handleSaveBlock"
+              @save:project-settings="handleSaveProjectSettings"
+              @reorder="handleReorder"
+            />
           </div>
         </section>
       </div>

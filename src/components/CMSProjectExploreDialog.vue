@@ -1,24 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { Dialog } from 'primevue'
 import Button from 'primevue/button'
+import type { ProjectSettings, ISelectOption, ContentBlock } from '@/types/cms'
 
 const { $gettext } = useGettext()
 
 const visible = defineModel<boolean>('visible')
 
-const projectTypeOptions = [
+const props = defineProps<{
+  contentBlock: ContentBlock | null
+}>()
+
+const emit = defineEmits<{
+  'save:project-settings': [blockId: string, settings: ProjectSettings]
+}>()
+
+const projectTypeOptions: ISelectOption<'donation' | 'voting'>[] = [
   { label: $gettext('Spendenprojekte'), value: 'donation' },
   { label: $gettext('Votingprojekte'), value: 'voting' },
 ]
 
-const viewOptions = [
+const viewOptions: ISelectOption<'list' | 'map'>[] = [
   { label: $gettext('Listenansicht'), value: 'list' },
   { label: $gettext('Kartenansicht'), value: 'map' },
 ]
 
-const sortOptions = [
+const sortOptions: ISelectOption<'az' | 'za' | 'newest' | 'oldest' | 'random'>[] = [
   { label: $gettext('A-Z'), value: 'az' },
   { label: $gettext('Z-A'), value: 'za' },
   { label: $gettext('Neuste'), value: 'newest' },
@@ -26,8 +35,8 @@ const sortOptions = [
   { label: $gettext('Zufällig'), value: 'random' },
 ]
 
-const formData = ref({
-  projectType: 'donation',
+const formData = computed(() => ({
+  projectType: 'donation' as const,
   overtitle: '',
   title: '',
   showInPageNav: false,
@@ -40,13 +49,14 @@ const formData = ref({
   showStatusFilter: false,
   initialFilterEndedProjects: false,
   advancedFilterRules: '',
-  startView: 'list',
-  initialSort: 'az',
+  startView: 'list' as const,
+  initialSort: 'az' as const,
   initialVisibleProjects: 12,
-})
+}))
 
 function onSave() {
-  console.log('Saving:', formData.value)
+  if (!props.contentBlock) return
+  emit('save:project-settings', props.contentBlock.id, formData.value)
   visible.value = false
 }
 </script>

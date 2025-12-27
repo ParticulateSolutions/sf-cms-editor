@@ -2,6 +2,7 @@
 import { useGettext } from 'vue3-gettext'
 import type { ContentBlock } from '@/types/cms'
 import Button from 'primevue/button'
+import { computed } from 'vue'
 
 const { $gettext } = useGettext()
 
@@ -9,13 +10,21 @@ interface Props {
   block: ContentBlock
   blockTypeName: string
 }
-defineProps<Props>()
+
+const { block } = defineProps<Props>()
 
 const emit = defineEmits<{
   remove: [blockId: string]
   edit: [blockId: string]
   toggleVisibility: [blockId: string]
 }>()
+
+const isVisible = computed(() => {
+  if ('visible' in block.settings) {
+    return block.settings.visible
+  }
+  return true
+})
 </script>
 
 <template>
@@ -51,7 +60,7 @@ const emit = defineEmits<{
           class="btn-minimal"
           size="small"
           text
-          :icon="`fa-regular ${block.settings.visible ? 'fa-eye' : 'fa-eye-slash'} fs-5`"
+          :icon="`fa-regular ${isVisible ? 'fa-eye' : 'fa-eye-slash'} fs-5`"
           @click="emit('toggleVisibility', block.id)"
         />
       </div>

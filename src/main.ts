@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { createGettext } from 'vue3-gettext'
 import Lara from '@primeuix/themes/lara'
@@ -11,15 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 import App from './App.vue'
-import router from './router'
 
 const app = createApp(App)
-
-// Set up Pinia for state management
-app.use(createPinia())
-
-// Set up router
-app.use(router)
 
 // Set up PrimeVue
 app.use(PrimeVue, {

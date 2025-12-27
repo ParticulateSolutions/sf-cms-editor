@@ -7,8 +7,5 @@ export { default as CMSContentBlockEditDialog } from './components/CMSContentBlo
 export { default as CMSMetadataPanel } from './components/CMSMetadataPanel.vue'
 export { default as CMSProjectExploreDialog } from './components/CMSProjectExploreDialog.vue'
 
-// Store
-export { useCMSStore } from './stores/cms'
-
 // Types
 export * from './types/cms'

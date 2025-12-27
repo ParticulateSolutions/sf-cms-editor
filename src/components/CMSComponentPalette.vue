@@ -3,19 +3,19 @@ import { useTemplateRef } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import Panel from 'primevue/panel'
-import { storeToRefs } from 'pinia'
-import { useCMSStore } from '@/stores/cms'
+import type { ComponentType } from '@/types/cms'
 
 const { $gettext } = useGettext()
 
-const cmsStore = useCMSStore()
-const { fetchCMSComponents } = useCMSStore()
-const { cmsComponents } = storeToRefs(cmsStore)
-fetchCMSComponents()
+interface Props {
+  components: ComponentType[]
+}
+
+const { components } = defineProps<Props>()
 
 const paletteRef = useTemplateRef('paletteRef')
 
-useSortable(paletteRef, cmsComponents, {
+useSortable(paletteRef, components, {
   group: {
     name: 'palette',
     pull: 'clone',
@@ -31,7 +31,7 @@ defineExpose({ paletteRef })
   <Panel :header="$gettext('Verfügbare Elemente')" class="h-100">
     <div ref="paletteRef" class="cms-component-palette">
       <div
-        v-for="component in cmsComponents"
+        v-for="component in components"
         :key="component.id"
         class="cms-component"
       >

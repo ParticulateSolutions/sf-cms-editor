@@ -2,86 +2,102 @@
 import { ref, useTemplateRef } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useSortable } from '@vueuse/integrations/useSortable'
-import type { ContentBlock } from '@/types/cms'
+import type { ContentBlock, ComponentType, ContentBlockFormValues, ProjectSettings } from '@/types/cms'
 import Panel from 'primevue/panel'
 import CMSContentBlock from './CMSContentBlock.vue'
 import CMSContentBlockEditDialog from './CMSContentBlockEditDialog.vue'
-import { storeToRefs } from 'pinia'
-import { useCMSStore } from '@/stores/cms'
 import CMSProjectExploreDialog from './CMSProjectExploreDialog.vue'
 
 const { $gettext } = useGettext()
-const cmsStore = useCMSStore()
-const { removeBlock, cmsComponents } = cmsStore
-const { contentBlocks } = storeToRefs(cmsStore)
-contentBlocks.value = [
-  {
-    id: 'header-block',
-    componentType: 'text',
-    order: 0,
-    fixed: true,
-    settings: { name: 'Header Text', title: 'Header', buttons: [], theme: 'light', visible: true },
-  },
-  {
-    id: 'footer-block',
-    componentType: 'text',
-    order: 1,
-    fixed: true,
-    settings: { name: 'Footer Text', title: 'Footer', buttons: [], theme: 'light', visible: true },
-  },
-]
+
+interface Props {
+  blocks: ContentBlock[]
+  components: ComponentType[]
+}
+
+const { blocks, components } = defineProps<Props>()
+
+const emit = defineEmits<{
+  'remove:block': [blockId: string]
+  'after:toggle-visibility': [blockId: string, visibilityBefore: boolean, visibilityAfter: boolean]
+  'add:block': [block: ContentBlock, index: number]
+  'reorder': [fromIndex: number, toIndex: number]
+  'save:block': [blockId: string, formData: ContentBlockFormValues]
+  'save:project-settings': [blockId: string, settings: ProjectSettings]
+}>()
 
 const contentAreaRef = useTemplateRef('contentAreaRef')
 let blockIdCounter = 0
 
-useSortable(contentAreaRef, contentBlocks, {
+useSortable(contentAreaRef, blocks, {
   animation: 150,
   group: {
     name: 'content',
     pull: false,
-    put: ['palette', 'content'], // Accept from palette AND other content areas
+    put: ['palette', 'content'],
   },
   filter: '.fixed',
   onAdd: (evt) => {
     if (evt.from !== evt.to) {
       const newIndex = evt.newIndex ?? 0
-      const component = cmsComponents[evt.oldIndex ?? 0]
+      const component = components[evt.oldIndex ?? 0]
       if (component == null) {
         return
       }
 
       const newBlock: ContentBlock = {
         id: `block-${blockIdCounter++}`,
+        name: component.name,
         componentType: component.type,
         order: newIndex,
         settings: {
-          name: component.name,
           positioning: 'image-left',
           buttons: [],
           theme: 'light',
         },
       }
-      contentBlocks.value.splice(newIndex, 0, newBlock)
+      emit('add:block', newBlock, newIndex)
       if (evt.item.parentNode) {
         evt.item.parentNode.removeChild(evt.item)
       }
     }
   },
+  onEnd: (evt) => {
+    blocks.forEach((block, index) => {
+      block.order = index
+    })
+    if (evt.oldIndex !== undefined && evt.newIndex !== undefined && evt.oldIndex !== evt.newIndex) {
+      emit('reorder', evt.oldIndex, evt.newIndex)
+    }
+  },
 })
 
 function getBlockTypeName(block: ContentBlock): string {
-  const component = cmsComponents.find((comp) => comp.type === block.componentType)
+  const component = components.find((comp) => comp.type === block.componentType)
   return component ? component.name : $gettext('Unbekannter Blocktyp')
 }
 
 defineExpose({ contentAreaRef })
 
-const dialogVisible = ref(false)
+const dialogVisible = defineModel<boolean>('visible')
 const selectedBlock = ref<ContentBlock | null>(null)
 
 function handleEdit(block: ContentBlock) {
   selectedBlock.value = block
   dialogVisible.value = true
+}
+
+function handleRemove(blockId: string) {
+  emit('remove:block', blockId)
+}
+
+function handleToggleVisibility(block: ContentBlock) {
+  if ('visible' in block.settings) {
+    const visibilityBefore = block.settings.visible ?? true
+    block.settings.visible = !visibilityBefore
+    const visibilityAfter = block.settings.visible
+    emit('after:toggle-visibility', block.id, visibilityBefore, visibilityAfter)
+  }
 }
 
 </script>
@@ -91,16 +107,16 @@ function handleEdit(block: ContentBlock) {
     <div
       ref="contentAreaRef"
       class="content-blocks"
-      :class="{ 'empty': contentBlocks.length === 0 }"
+      :class="{ 'empty': blocks.length === 0 }"
     >
       <CMSContentBlock
-        v-for="block in contentBlocks"
+        v-for="block in blocks"
         :key="block.id"
         :block="block"
         :block-type-name="getBlockTypeName(block)"
         @edit="handleEdit(block)"
-        @remove="removeBlock"
-        @toggle-visibility="block.settings.visible = !block.settings.visible"
+        @remove="handleRemove(block.id)"
+        @toggle-visibility="handleToggleVisibility(block)"
       />
     </div>
   </Panel>
@@ -109,12 +125,14 @@ function handleEdit(block: ContentBlock) {
     v-if="selectedBlock && selectedBlock.componentType !== 'projects'"
     v-model:visible="dialogVisible"
     :content-block="selectedBlock"
+    @save:block="(blockId, formData) => $emit('save:block', blockId, formData)"
   />
 
   <CMSProjectExploreDialog
     v-else-if="selectedBlock && selectedBlock.componentType === 'projects'"
     v-model:visible="dialogVisible"
     :content-block="selectedBlock"
+    @save:project-settings="(blockId, settings) => $emit('save:project-settings', blockId, settings)"
   />
 </template>
 
