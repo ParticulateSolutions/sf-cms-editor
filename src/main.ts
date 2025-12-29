@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
-import { createGettext } from 'vue3-gettext'
+import { createI18n } from 'vue-i18n'
 import Lara from '@primeuix/themes/lara'
+import { defaultTranslations } from './i18n'
 
 // Bootstrap CSS (for demo - components use Bootstrap classes)
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -23,15 +24,16 @@ app.use(PrimeVue, {
   }
 })
 
-// Set up gettext for i18n
-const gettext = createGettext({
-  availableLanguages: {
-    en: 'English',
-    de: 'Deutsch'
-  },
-  defaultLanguage: 'en',
-  translations: {}
+// Set up vue-i18n for i18n
+const i18n = createI18n({
+  legacy: false,
+  locale: 'de',
+  fallbackLocale: 'de',
+  messages: {
+    de: defaultTranslations.de,
+    en: defaultTranslations.en
+  }
 })
-app.use(gettext)
+app.use(i18n)
 
 app.mount('#app')

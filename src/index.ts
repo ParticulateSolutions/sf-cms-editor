@@ -9,3 +9,6 @@ export { default as CMSProjectExploreDialog } from './components/CMSProjectExplo
 
 // Types
 export * from './types/cms'
+
+// i18n
+export { defaultTranslations } from './i18n'

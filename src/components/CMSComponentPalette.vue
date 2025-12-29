@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import Panel from 'primevue/panel'
 import type { ComponentType } from '@/types/cms'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 interface Props {
   components: ComponentType[]
@@ -28,7 +28,7 @@ defineExpose({ paletteRef })
 </script>
 
 <template>
-  <Panel :header="$gettext('Verfügbare Elemente')" class="h-100">
+  <Panel :header="t('componentPalette.availableElements')" class="h-100">
     <div ref="paletteRef" class="cms-component-palette">
       <div
         v-for="component in components"

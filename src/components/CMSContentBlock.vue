@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import type { ContentBlock } from '@/types/cms'
 import Button from 'primevue/button'
 import { computed } from 'vue'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 interface Props {
   block: ContentBlock
@@ -34,7 +34,7 @@ const isVisible = computed(() => {
   >
     <div class="component-block-left">
       <i :class="{ 'fa-solid fa-bars': !block.fixed }" />
-      <span>{{ block.settings.title || $gettext('Unbenannt') }}</span>
+      <span>{{ block.settings.title || t('general.unnamed') }}</span>
     </div>
     <div class="component-block-right">
       <span>{{ blockTypeName }}</span>

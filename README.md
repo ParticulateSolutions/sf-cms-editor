@@ -8,6 +8,90 @@
 npm install @particulatesolutions/cms-editor
 ```
 
+## Internationalization (i18n)
+
+This library includes `vue-i18n` and provides default translations in German and English. You must set up vue-i18n in your application for the components to display translated text.
+
+### Setting up i18n
+
+1. **Import and set up vue-i18n** with the library's default translations:
+
+```typescript
+import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
+import { defaultTranslations } from '@particulatesolutions/cms-editor'
+
+const i18n = createI18n({
+  legacy: false,
+  locale: 'de', // or 'en'
+  fallbackLocale: 'de',
+  messages: {
+    de: {
+      ...defaultTranslations.de,
+      // Add your other German translations here
+    },
+    en: {
+      ...defaultTranslations.en,
+      // Add your other English translations here
+    }
+  }
+})
+
+app.use(i18n)
+```
+
+2. **Switching languages** dynamically:
+
+```typescript
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+
+// Switch to English
+locale.value = 'en'
+
+// Switch to German
+locale.value = 'de'
+```
+
+### Overriding Translations
+
+You can override any library translation by providing your own values:
+
+```typescript
+const i18n = createI18n({
+  locale: 'en',
+  messages: {
+    en: {
+      ...defaultTranslations.en,
+      // Override specific library translations
+      general: {
+        save: 'Save Changes', // Override 'Save' with 'Save Changes'
+        unnamed: 'Untitled Item' // Override 'Unnamed' with 'Untitled Item'
+      },
+      // Override other sections as needed
+      contentBlockEdit: {
+        title: 'Main Heading'
+      }
+    }
+  }
+})
+```
+
+### Available Translation Keys
+
+The library provides translations in German (`de`) and English (`en`) organized into the following sections:
+
+- **general**: Common labels (save, unnamed, dash)
+- **componentPalette**: Component palette labels
+- **contentBlock**: Content block labels
+- **contentBlockEdit**: Content block editing form labels
+- **buttonTable**: Button table labels
+- **metadataPanel**: SEO metadata form labels
+- **projectExplore**: Project explore dialog labels
+
+Refer to the `defaultTranslations` export for the complete list of available keys and their values.
+
 ## Usage
 
 ```typescript
@@ -209,10 +293,12 @@ Dialog for configuring project listing blocks with filters, sorting, and display
 - @primevue/forms 4.5+
 - @primeuix/themes 2.0+
 - @primeuix/styled (latest)
-- vue3-gettext 4.0+
 - @vueuse/integrations 14.0+
 - zod 4.2+
 - sortablejs 1.15+
+
+### Bundled Dependencies
+- vue-i18n 11.0+
 
 ## Development
 

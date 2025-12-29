@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import type { ContentBlock, ComponentType, ContentBlockFormValues, ProjectSettings } from '@/types/cms'
 import Panel from 'primevue/panel'
@@ -8,7 +8,7 @@ import CMSContentBlock from './CMSContentBlock.vue'
 import CMSContentBlockEditDialog from './CMSContentBlockEditDialog.vue'
 import CMSProjectExploreDialog from './CMSProjectExploreDialog.vue'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 interface Props {
   blocks: ContentBlock[]
@@ -74,7 +74,7 @@ useSortable(contentAreaRef, blocks, {
 
 function getBlockTypeName(block: ContentBlock): string {
   const component = components.find((comp) => comp.type === block.componentType)
-  return component ? component.name : $gettext('Unbekannter Blocktyp')
+  return component ? component.name : t('contentBlock.unknownBlockType')
 }
 
 defineExpose({ contentAreaRef })

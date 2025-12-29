@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, useTemplateRef, computed } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import z from 'zod'
 import type { ContentBlockPosition, ContentBlockTheme, ISelectOption, ContentBlockFormValues, ContentBlockButton, ContentBlockSettings, GenericContentBlock } from '@/types/cms'
 import type { FormInstance, FormSubmitEvent } from '@primevue/forms'
 import CMSButtonTable from './CMSButtonTable.vue'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 const visible = defineModel<boolean>('visible')
 const props = defineProps<{
@@ -41,15 +41,15 @@ const buttons = ref<ContentBlockButton[]>([{
 }])
 
 const positionOptions: ISelectOption<ContentBlockPosition>[] = [
-  { label: $gettext('Text links, Bild rechts'), value: 'text-left' },
-  { label: $gettext('Bild links, Text rechts'), value: 'image-left' },
-  { label: $gettext('Text oben, Bild unten'), value: 'text-top' },
-  { label: $gettext('Bild oben, Text unten'), value: 'image-top' },
+  { label: t('contentBlockEdit.positionTextLeft'), value: 'text-left' },
+  { label: t('contentBlockEdit.positionImageLeft'), value: 'image-left' },
+  { label: t('contentBlockEdit.positionTextTop'), value: 'text-top' },
+  { label: t('contentBlockEdit.positionImageTop'), value: 'image-top' },
 ]
 
 const themeOptions: ISelectOption<ContentBlockTheme>[] = [
-  { label: $gettext('Heller Hintergrund mit dunkler Schrift'), value: 'light' },
-  { label: $gettext('Dunkler Hintergrund mit heller Schrift'), value: 'dark' },
+  { label: t('contentBlockEdit.themeLight'), value: 'light' },
+  { label: t('contentBlockEdit.themeDark'), value: 'dark' },
 ]
 
 const initialValues = computed<ContentBlockSettings>(() => ({
@@ -107,7 +107,7 @@ function onSubmit (event: FormSubmitEvent) {
     >
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="overtitle">{{ $gettext('Vortitel') }}</label>
+          <label for="overtitle">{{ t('contentBlockEdit.overtitle') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex">
@@ -120,7 +120,7 @@ function onSubmit (event: FormSubmitEvent) {
 
             <div class="in-page-nav-container d-flex">
               <ToggleSwitch name="showInPageNav" />
-              <label for="showInPageNav" class="ms-2">{{ $gettext('Im Seitenmenü listen') }}</label>
+              <label for="showInPageNav" class="ms-2">{{ t('contentBlockEdit.showInPageNav') }}</label>
               <Message v-if="$form.showInPageNav?.invalid" severity="error" size="small" variant="simple">
                 {{ $form.showInPageNav.error.message }}
               </Message>
@@ -131,7 +131,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="title">{{ $gettext('Überschrift 1') }}</label>
+          <label for="title">{{ t('contentBlockEdit.title') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="title" class="w-100" />
@@ -143,7 +143,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="text">{{ $gettext('Text') }}</label>
+          <label for="text">{{ t('contentBlockEdit.text') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Textarea name="text" class="w-100" rows="5" />
@@ -155,7 +155,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="image">{{ $gettext('Bild') }}</label>
+          <label for="image">{{ t('contentBlockEdit.image') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="image" class="w-100" />
@@ -167,7 +167,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="positioning">{{ $gettext('Anordnung') }}</label>
+          <label for="positioning">{{ t('contentBlockEdit.positioning') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Select
@@ -185,7 +185,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="buttons">{{ $gettext('Buttons') }}</label>
+          <label for="buttons">{{ t('contentBlockEdit.buttons') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <CMSButtonTable v-model="buttons" />
@@ -194,7 +194,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="theme">{{ $gettext('Farbe') }}</label>
+          <label for="theme">{{ t('contentBlockEdit.color') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Select
@@ -212,7 +212,7 @@ function onSubmit (event: FormSubmitEvent) {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="cssClasses">{{ $gettext('Ergänzende CSS-Klassen') }}</label>
+          <label for="cssClasses">{{ t('contentBlockEdit.cssClasses') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="cssClasses" class="w-100" />
@@ -226,7 +226,7 @@ function onSubmit (event: FormSubmitEvent) {
         <div class="col-12 d-flex justify-content-end">
           <Button
             type="submit"
-            :label="$gettext('Speichern')"
+            :label="t('general.save')"
           />
         </div>
       </div>

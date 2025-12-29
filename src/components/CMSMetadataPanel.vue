@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import { z } from 'zod'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 
 const resolver = ref(zodResolver(
   z.object({
-    metaTitle: z.string().max(60, $gettext('Der Meta-Titel darf maximal 60 Zeichen lang sein.')),
+    metaTitle: z.string().max(60, t('metadataPanel.metaTitleMaxLength')),
   }),
 ))
 </script>
@@ -19,7 +19,7 @@ const resolver = ref(zodResolver(
     <Form v-slot="$form" :resolver="resolver" class="d-flex flex-column gap-4">
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="meta-title">{{ $gettext('Meta-/SEO-Titel') }}</label>
+          <label for="meta-title">{{ t('metadataPanel.metaTitle') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="meta-title" class="w-100" />
@@ -30,7 +30,7 @@ const resolver = ref(zodResolver(
       </div>
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="meta-description">{{ $gettext('Meta-/SEO-Beschreibung') }}</label>
+          <label for="meta-description">{{ t('metadataPanel.metaDescription') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Textarea name="meta-description" class="w-100" :rows="4" />
@@ -41,7 +41,7 @@ const resolver = ref(zodResolver(
       </div>
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="meta-description">{{ $gettext('Open Graph Image (OG-Bild)') }}</label>
+          <label for="meta-description">{{ t('metadataPanel.ogImage') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="open-graph-image" class="w-100" />
@@ -52,7 +52,7 @@ const resolver = ref(zodResolver(
       </div>
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="indexing-allowed">{{ $gettext('Indexierung erlauben') }}</label>
+          <label for="indexing-allowed">{{ t('metadataPanel.indexingAllowed') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <ToggleSwitch name="indexing-allowed" />
@@ -63,7 +63,7 @@ const resolver = ref(zodResolver(
       </div>
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="tags">{{ $gettext('Tags') }}</label>
+          <label for="tags">{{ t('metadataPanel.tags') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText name="tags" class="w-100" />

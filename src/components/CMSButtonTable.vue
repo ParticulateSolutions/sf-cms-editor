@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
+import { useSafeI18n } from '@/i18n'
 import type { DataTableCellEditCompleteEvent } from 'primevue'
 import Button from 'primevue/button'
 
-const { $gettext } = useGettext()
+const { t } = useSafeI18n()
 
 type CMSButton = {
   icon: string
@@ -41,7 +41,7 @@ function addButton() {
         size="small"
         icon="fa-solid fa-plus"
         text
-        :label="$gettext('Button hinzufügen')"
+        :label="t('buttonTable.addButton')"
         @click="addButton"
       />
     </div>
@@ -51,16 +51,16 @@ function addButton() {
       show-gridlines
       @cell-edit-complete="onCellEditComplete"
     >
-      <Column key="icon" field="icon" :header="$gettext('Icon')">
+      <Column key="icon" field="icon" :header="t('buttonTable.icon')">
         <template #body="{ data }">
           <i v-if="data.icon" :class="data.icon" />
-          <span v-else>{{ $gettext('-') }}</span>
+          <span v-else>{{ t('general.dash') }}</span>
         </template>
         <template #editor="slotProps">
           <InputText v-model="slotProps.data[slotProps.field]" class="w-100" />
         </template>
       </Column>
-      <Column key="text" field="text" :header="$gettext('Buttontext')">
+      <Column key="text" field="text" :header="t('buttonTable.buttonText')">
         <template #body="{ data }">
           <span>{{ data.text || '-' }}</span>
         </template>
@@ -68,7 +68,7 @@ function addButton() {
           <InputText v-model="slotProps.data[slotProps.field]" class="w-100" />
         </template>
       </Column>
-      <Column key="url" field="url" :header="$gettext('URL')">
+      <Column key="url" field="url" :header="t('buttonTable.url')">
         <template #body="{ data }">
           <span>{{ data.url || '-' }}</span>
         </template>
@@ -76,7 +76,7 @@ function addButton() {
           <InputText v-model="slotProps.data[slotProps.field]" class="w-100" />
         </template>
       </Column>
-      <Column key="type" field="type" :header="$gettext('Buttontyp')">
+      <Column key="type" field="type" :header="t('buttonTable.buttonType')">
         <template #body="{ data }">
           <span>{{ data.type || '-' }}</span>
         </template>
@@ -84,7 +84,7 @@ function addButton() {
           <InputText v-model="slotProps.data[slotProps.field]" class="w-100" />
         </template>
       </Column>
-      <Column key="ariaLabel" field="ariaLabel" :header="$gettext('Aria-Label')">
+      <Column key="ariaLabel" field="ariaLabel" :header="t('buttonTable.ariaLabel')">
         <template #body="{ data }">
           <span>{{ data.ariaLabel || '-' }}</span>
         </template>

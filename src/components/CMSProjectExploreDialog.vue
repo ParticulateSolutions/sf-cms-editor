@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import { useI18n } from 'vue-i18n'
 import { Dialog } from 'primevue'
 import Button from 'primevue/button'
 import type { ProjectSettings, ISelectOption, ContentBlock } from '@/types/cms'
 
-const { $gettext } = useGettext()
+const { t } = useI18n()
 
 const visible = defineModel<boolean>('visible')
 
@@ -18,21 +18,21 @@ const emit = defineEmits<{
 }>()
 
 const projectTypeOptions: ISelectOption<'donation' | 'voting'>[] = [
-  { label: $gettext('Spendenprojekte'), value: 'donation' },
-  { label: $gettext('Votingprojekte'), value: 'voting' },
+  { label: t('projectExplore.donationProjects'), value: 'donation' },
+  { label: t('projectExplore.votingProjects'), value: 'voting' },
 ]
 
 const viewOptions: ISelectOption<'list' | 'map'>[] = [
-  { label: $gettext('Listenansicht'), value: 'list' },
-  { label: $gettext('Kartenansicht'), value: 'map' },
+  { label: t('projectExplore.listView'), value: 'list' },
+  { label: t('projectExplore.mapView'), value: 'map' },
 ]
 
 const sortOptions: ISelectOption<'az' | 'za' | 'newest' | 'oldest' | 'random'>[] = [
-  { label: $gettext('A-Z'), value: 'az' },
-  { label: $gettext('Z-A'), value: 'za' },
-  { label: $gettext('Neuste'), value: 'newest' },
-  { label: $gettext('Älteste'), value: 'oldest' },
-  { label: $gettext('Zufällig'), value: 'random' },
+  { label: t('projectExplore.sortAZ'), value: 'az' },
+  { label: t('projectExplore.sortZA'), value: 'za' },
+  { label: t('projectExplore.sortNewest'), value: 'newest' },
+  { label: t('projectExplore.sortOldest'), value: 'oldest' },
+  { label: t('projectExplore.sortRandom'), value: 'random' },
 ]
 
 const formData = computed(() => ({
@@ -82,7 +82,7 @@ function onSave() {
     <div class="d-flex flex-column gap-4 m-3">
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="projectType">{{ $gettext('Art der Projekte') }}</label>
+          <label for="projectType">{{ t('projectExplore.projectType') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Select
@@ -98,7 +98,7 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="overtitle">{{ $gettext('Vortitel') }}</label>
+          <label for="overtitle">{{ t('contentBlockEdit.overtitle') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex">
@@ -107,7 +107,7 @@ function onSave() {
             </div>
             <div class="in-page-nav-container d-flex">
               <ToggleSwitch id="showInPageNavToggle" v-model="formData.showInPageNav" />
-              <label for="showInPageNavToggle" class="ms-2">{{ $gettext('In Seitenmenü listen') }}</label>
+              <label for="showInPageNavToggle" class="ms-2">{{ t('projectExplore.showInPageNav') }}</label>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="title">{{ $gettext('Überschrift 1') }}</label>
+          <label for="title">{{ t('contentBlockEdit.title') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputText v-model="formData.title" class="w-100" />
@@ -124,33 +124,33 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label>{{ $gettext('Konfiguration') }}</label>
+          <label>{{ t('projectExplore.configuration') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex align-items-center">
             <ToggleSwitch v-model="formData.useStandardConfig" />
-            <label class="ms-2">{{ $gettext('Standardkonfiguration verwenden') }}</label>
+            <label class="ms-2">{{ t('projectExplore.useStandardConfig') }}</label>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label>{{ $gettext('Projektauswahl und Verhalten') }}</label>
+          <label>{{ t('projectExplore.projectSelection') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex flex-column gap-3">
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.includePublicProjects" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Öffentliche Projekte inkludieren') }}</label>
+              <label class="ms-2">{{ t('projectExplore.includePublicProjects') }}</label>
             </div>
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.includeArchivedProjects" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Archivierte Projekte inkludieren') }}</label>
+              <label class="ms-2">{{ t('projectExplore.includeArchivedProjects') }}</label>
             </div>
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.redirectToDedicatedPages" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Weiterleitung auf dedizierte Projektseiten aktivieren') }}</label>
+              <label class="ms-2">{{ t('projectExplore.redirectToDedicatedPages') }}</label>
             </div>
           </div>
         </div>
@@ -158,21 +158,21 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label>{{ $gettext('Sichtbare Filterung') }}</label>
+          <label>{{ t('projectExplore.visibleFiltering') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex flex-column gap-3">
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.showSearch" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Suche anzeigen') }}</label>
+              <label class="ms-2">{{ t('projectExplore.showSearch') }}</label>
             </div>
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.showCategoryFilter" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Kategoriefilter anzeigen') }}</label>
+              <label class="ms-2">{{ t('projectExplore.showCategoryFilter') }}</label>
             </div>
             <div class="d-flex align-items-center">
               <ToggleSwitch v-model="formData.showStatusFilter" :disabled="formData.useStandardConfig" />
-              <label class="ms-2">{{ $gettext('Statusfilter anzeigen') }}</label>
+              <label class="ms-2">{{ t('projectExplore.showStatusFilter') }}</label>
             </div>
           </div>
         </div>
@@ -180,19 +180,19 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label>{{ $gettext('Unsichtbare Filterung') }}</label>
+          <label>{{ t('projectExplore.invisibleFiltering') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <div class="d-flex align-items-center">
             <ToggleSwitch v-model="formData.initialFilterEndedProjects" :disabled="formData.useStandardConfig" />
-            <label class="ms-2">{{ $gettext('Beendete Projekte initial herausfiltern') }}</label>
+            <label class="ms-2">{{ t('projectExplore.initialFilterEndedProjects') }}</label>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="advancedFilterRules">{{ $gettext('Erweiterte Filterregeln') }}</label>
+          <label for="advancedFilterRules">{{ t('projectExplore.advancedFilterRules') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Textarea
@@ -206,7 +206,7 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="startView">{{ $gettext('Startansicht') }}</label>
+          <label for="startView">{{ t('projectExplore.startView') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Select
@@ -222,7 +222,7 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="initialSort">{{ $gettext('Initiale Listensortierung') }}</label>
+          <label for="initialSort">{{ t('projectExplore.initialSort') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <Select
@@ -238,7 +238,7 @@ function onSave() {
 
       <div class="row">
         <div class="col-lg-4 col-12">
-          <label for="initialVisibleProjects">{{ $gettext('Anzahl initial sichtbarer Projekte') }}</label>
+          <label for="initialVisibleProjects">{{ t('projectExplore.initialVisibleProjects') }}</label>
         </div>
         <div class="col-lg-8 col-12">
           <InputNumber
@@ -252,7 +252,7 @@ function onSave() {
       <div class="row">
         <div class="col-12 d-flex justify-content-end">
           <Button
-            :label="$gettext('Speichern')"
+            :label="t('general.save')"
             @click="onSave"
           />
         </div>
