@@ -4,8 +4,8 @@ import { createI18n } from 'vue-i18n'
 import Lara from '@primeuix/themes/lara'
 import { defaultTranslations } from './i18n'
 
-// Bootstrap CSS (for demo - components use Bootstrap classes)
-import 'bootstrap/dist/css/bootstrap.min.css'
+// Tailwind CSS (includes all utility classes used by components)
+import './assets/main.css'
 
 // FontAwesome icons (for demo)
 import '@fortawesome/fontawesome-free/css/all.min.css'

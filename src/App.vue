@@ -89,7 +89,7 @@ function handleReorder(fromIndex: number, toIndex: number) {
 </script>
 
 <template>
-  <div class="d-flex flex-column min-vh-100">
+  <div class="flex flex-col min-h-screen">
     <header class="demo-header">
       <h1>@socialfunders/cms-editor Demo</h1>
       <p>Interactive preview of CMS editor components</p>
@@ -109,18 +109,18 @@ function handleReorder(fromIndex: number, toIndex: number) {
       </div>
     </header>
 
-    <main class="flex-grow-1 p-4 bg-light">
-      <div v-if="activeTab === 'editor'" class="row g-4 h-100">
-        <aside class="col-lg-3 col-md-4">
-          <div class="bg-white rounded p-3 shadow d-flex flex-column h-100">
-            <h2 class="mb-3 fs-5">Components</h2>
+    <main class="flex-grow p-4 bg-gray-100">
+      <div v-if="activeTab === 'editor'" class="grid grid-cols-1 md:grid-cols-12 gap-4 h-full">
+        <aside class="md:col-span-3">
+          <div class="bg-white rounded p-3 shadow flex flex-col h-full">
+            <h2 class="mb-3 text-lg">Components</h2>
             <CMSComponentPalette :components="components" />
           </div>
         </aside>
 
-        <section class="col-lg-9 col-md-8">
-          <div class="bg-white rounded p-3 shadow d-flex flex-column h-100">
-            <h2 class="mb-3 fs-5">Page Content</h2>
+        <section class="md:col-span-9">
+          <div class="bg-white rounded p-3 shadow flex flex-col h-full">
+            <h2 class="mb-3 text-lg">Page Content</h2>
             <CMSContentArea
               :blocks="blocks"
               :components="components"

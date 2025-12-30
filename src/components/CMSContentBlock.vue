@@ -30,7 +30,7 @@ const isVisible = computed(() => {
 <template>
   <div
     class="cms-component-block"
-    :class="{ 'fixed': block.fixed }"
+    :class="{ 'fixed-block': block.fixed }"
   >
     <div class="component-block-left">
       <i :class="{ 'fa-solid fa-bars': !block.fixed }" />
@@ -73,8 +73,8 @@ const isVisible = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius-sm);
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
   overflow: hidden;
   padding: 0.5rem 1rem;
   cursor: grab;

@@ -299,6 +299,25 @@ Dialog for configuring project listing blocks with filters, sorting, and display
 
 ### Bundled Dependencies
 - vue-i18n 11.0+
+- tailwindcss 4.1+ (self-contained, no setup required)
+- @tailwindcss/vite 4.1+
+- tailwindcss-primeui 0.6+
+
+### Styling
+
+This library uses **Tailwind CSS v4** for utility classes and styling. The compiled CSS bundle (`dist/index.css`) is **fully self-contained** and includes all necessary Tailwind utilities used by the components.
+
+**Parent applications do NOT need to:**
+- Install Tailwind CSS
+- Configure Tailwind
+- Include Tailwind in their build process
+
+**Simply import the library's CSS:**
+```typescript
+import '@particulatesolutions/cms-editor/style.css'
+```
+
+The generated CSS is minimal (~2KB gzipped) and includes only the Tailwind utilities actually used by the components, plus component-specific styles.
 
 ## Development
 

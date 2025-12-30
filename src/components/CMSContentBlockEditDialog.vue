@@ -84,10 +84,10 @@ function onSubmit (event: FormSubmitEvent) {
     v-model:visible="visible"
     modal
     :closable="false"
-    class="w-75 rounded-4"
+    class="w-3/4 rounded-2xl"
   >
     <template #header>
-      <div class="d-flex justify-content-end w-100">
+      <div class="flex justify-end w-full">
         <Button
           icon="fa-solid fa-xmark"
           text
@@ -102,23 +102,23 @@ function onSubmit (event: FormSubmitEvent) {
       ref="formRef"
       :resolver="resolver"
       :initial-values="initialValues"
-      class="d-flex flex-column gap-4 m-3"
+      class="flex flex-col gap-4 m-3"
       @submit="onSubmit"
     >
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="overtitle">{{ t('contentBlockEdit.overtitle') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
-          <div class="d-flex">
+        <div class="lg:col-span-8 col-span-12">
+          <div class="flex">
             <div class="overtitle-input-container">
-              <InputText name="overtitle" class="w-100" />
+              <InputText name="overtitle" class="w-full" />
               <Message v-if="$form.overtitle?.invalid" severity="error" size="small" variant="simple">
                 {{ $form.overtitle.error.message }}
               </Message>
             </div>
 
-            <div class="in-page-nav-container d-flex">
+            <div class="in-page-nav-container flex">
               <ToggleSwitch name="showInPageNav" />
               <label for="showInPageNav" class="ms-2">{{ t('contentBlockEdit.showInPageNav') }}</label>
               <Message v-if="$form.showInPageNav?.invalid" severity="error" size="small" variant="simple">
@@ -129,52 +129,52 @@ function onSubmit (event: FormSubmitEvent) {
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="title">{{ t('contentBlockEdit.title') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
-          <InputText name="title" class="w-100" />
+        <div class="lg:col-span-8 col-span-12">
+          <InputText name="title" class="w-full" />
           <Message v-if="$form.title?.invalid" severity="error" size="small" variant="simple">
             {{ $form.title.error.message }}
           </Message>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="text">{{ t('contentBlockEdit.text') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
-          <Textarea name="text" class="w-100" rows="5" />
+        <div class="lg:col-span-8 col-span-12">
+          <Textarea name="text" class="w-full" rows="5" />
           <Message v-if="$form.text?.invalid" severity="error" size="small" variant="simple">
             {{ $form.text.error.message }}
           </Message>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="image">{{ t('contentBlockEdit.image') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
-          <InputText name="image" class="w-100" />
+        <div class="lg:col-span-8 col-span-12">
+          <InputText name="image" class="w-full" />
           <Message v-if="$form.image?.invalid" severity="error" size="small" variant="simple">
             {{ $form.image.error.message }}
           </Message>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="positioning">{{ t('contentBlockEdit.positioning') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
+        <div class="lg:col-span-8 col-span-12">
           <Select
             name="positioning"
             option-label="label"
             option-value="value"
-            class="w-100"
+            class="w-full"
             :options="positionOptions"
           />
           <Message v-if="$form.positioning?.invalid" severity="error" size="small" variant="simple">
@@ -183,25 +183,25 @@ function onSubmit (event: FormSubmitEvent) {
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="buttons">{{ t('contentBlockEdit.buttons') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
+        <div class="lg:col-span-8 col-span-12">
           <CMSButtonTable v-model="buttons" />
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="theme">{{ t('contentBlockEdit.color') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
+        <div class="lg:col-span-8 col-span-12">
           <Select
             name="theme"
             option-label="label"
             option-value="value"
-            class="w-100"
+            class="w-full"
             :options="themeOptions"
           />
           <Message v-if="$form.theme?.invalid" severity="error" size="small" variant="simple">
@@ -210,20 +210,20 @@ function onSubmit (event: FormSubmitEvent) {
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-4 col-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-4 col-span-12">
           <label for="cssClasses">{{ t('contentBlockEdit.cssClasses') }}</label>
         </div>
-        <div class="col-lg-8 col-12">
-          <InputText name="cssClasses" class="w-100" />
+        <div class="lg:col-span-8 col-span-12">
+          <InputText name="cssClasses" class="w-full" />
           <Message v-if="$form.cssClasses?.invalid" severity="error" size="small" variant="simple">
             {{ $form.cssClasses.error.message }}
           </Message>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-12 d-flex justify-content-end">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="col-span-12 flex justify-end">
           <Button
             type="submit"
             :label="t('general.save')"

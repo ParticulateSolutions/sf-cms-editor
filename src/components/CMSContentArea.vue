@@ -36,7 +36,7 @@ useSortable(contentAreaRef, blocks, {
     pull: false,
     put: ['palette', 'content'],
   },
-  filter: '.fixed',
+  filter: '.fixed-block',
   onAdd: (evt) => {
     if (evt.from !== evt.to) {
       const newIndex = evt.newIndex ?? 0
@@ -147,7 +147,7 @@ function handleToggleVisibility(block: ContentBlock) {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bs-secondary);
+    color: #6c757d;
     font-style: italic;
   }
 }

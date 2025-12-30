@@ -56,14 +56,14 @@ defineExpose({ paletteRef })
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius-sm);
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
   overflow: hidden;
   padding-right: 0.5rem;
   cursor: grab;
 
   &:hover {
-    background-color: var(--bs-light);
+    background-color: #f8f9fa;
   }
 }
 

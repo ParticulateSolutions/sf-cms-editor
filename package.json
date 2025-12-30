@@ -1,6 +1,6 @@
 {
   "name": "@particulatesolutions/cms-editor",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "CMS editor components for Socialfunders platform (internal use)",
   "type": "module",
   "main": "./dist/index.js",
@@ -43,6 +43,9 @@
     "zod": "^4.2.1"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "tailwindcss": "^4.1.18",
+    "tailwindcss-primeui": "^0.6.1",
     "vue-i18n": "^11.2.7"
   },
   "devDependencies": {
@@ -58,7 +61,6 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "@vueuse/integrations": "^14.1.0",
-    "bootstrap": "^5.3.8",
     "eslint": "^9.39.1",
     "eslint-plugin-vue": "~10.5.1",
     "jiti": "^2.6.1",

@@ -166,7 +166,6 @@ export const defaultTranslations = {
  * if vue-i18n is not set up in the parent app
  */
 export function useSafeI18n() {
-  console.log("Hallo?")
   const instance = getCurrentInstance();
   let t: ((key: string) => string) | null = null
   
